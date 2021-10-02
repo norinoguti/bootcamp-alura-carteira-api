@@ -1,23 +1,27 @@
 package br.com.alura.transacoes.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.alura.transacoes.dao.UsuarioDao;
 import br.com.alura.transacoes.dto.UsuarioDto;
 import br.com.alura.transacoes.dto.UsuarioFormDto;
 import br.com.alura.transacoes.modelo.Usuario;
 
 @Service
 public class UsuarioService {
-	private List<Usuario> usuarios = new ArrayList<>();
+
+	@Autowired
+	private UsuarioDao usuarioDao;
 	private ModelMapper modelMapper = new ModelMapper();
 
 	public List<UsuarioDto> listar() {
+		List<Usuario> usuarios = usuarioDao.listar();
 		return usuarios.stream().map(t -> modelMapper.map(t, UsuarioDto.class)).collect(Collectors.toList());
 
 	}
@@ -30,7 +34,7 @@ public class UsuarioService {
 		usuario.setSenha(senha);
 		//System.out.println(usuario.getSenha());
 		
-		usuarios.add(usuario);
+		usuarioDao.salvar(usuario);
 
 	}
 }
