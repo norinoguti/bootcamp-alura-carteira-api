@@ -8,20 +8,20 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.alura.transacoes.dao.UsuarioDao;
 import br.com.alura.transacoes.dto.UsuarioDto;
 import br.com.alura.transacoes.dto.UsuarioFormDto;
 import br.com.alura.transacoes.modelo.Usuario;
+import br.com.alura.transacoes.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
 
 	@Autowired
-	private UsuarioDao usuarioDao;
+	private UsuarioRepository usuarioRepository;
 	private ModelMapper modelMapper = new ModelMapper();
 
 	public List<UsuarioDto> listar() {
-		List<Usuario> usuarios = usuarioDao.listar();
+		List<Usuario> usuarios = usuarioRepository.findAll();
 		return usuarios.stream().map(t -> modelMapper.map(t, UsuarioDto.class)).collect(Collectors.toList());
 
 	}
@@ -34,7 +34,6 @@ public class UsuarioService {
 		usuario.setSenha(senha);
 		//System.out.println(usuario.getSenha());
 		
-		usuarioDao.salvar(usuario);
-
+		usuarioRepository.save(usuario);
 	}
 }

@@ -1,11 +1,9 @@
 package br.com.alura.transacoes.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.alura.transacoes.dto.TransacaoDto;
 import br.com.alura.transacoes.dto.TransacaoFormDto;
-import br.com.alura.transacoes.modelo.Transacao;
 import br.com.alura.transacoes.service.TransacaoService;
 
 @RestController

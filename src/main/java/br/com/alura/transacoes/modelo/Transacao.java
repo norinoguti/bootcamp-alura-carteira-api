@@ -3,6 +3,7 @@ package br.com.alura.transacoes.modelo;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -28,14 +29,16 @@ import lombok.ToString;
 public class Transacao {
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id",unique=true,nullable=false)
 	private Long id;
 	private String ticker;
 	private LocalDate data;
 	private BigDecimal preco;
-	private Integer quantidade;
+	private Integer quantidade;	
 	
 	@Enumerated(EnumType.STRING)
 	private TipoTransacao tipo;
+	
 	@ManyToOne
 	private Usuario usuario;
 	

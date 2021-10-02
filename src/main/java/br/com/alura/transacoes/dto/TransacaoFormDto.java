@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.alura.transacoes.modelo.TipoTransacao;
@@ -30,5 +30,6 @@ public class TransacaoFormDto {
 	private int quantidade;
 	@NotNull
 	private TipoTransacao tipo;
-	
+	@JsonAlias("usuario_id")
+	private Long usuarioId;
 }
