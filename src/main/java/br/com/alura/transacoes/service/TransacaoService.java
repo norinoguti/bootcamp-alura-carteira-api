@@ -26,6 +26,7 @@ public class TransacaoService {
 
 	public void cadastrar(TransacaoFormDto dto) {
 		Transacao transacao = modelMapper.map(dto, Transacao.class);
+		transacao.setId(null);
 		transacaoRepository.save(transacao);
 
 	}
