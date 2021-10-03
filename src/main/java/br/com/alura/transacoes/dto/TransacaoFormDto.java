@@ -22,7 +22,7 @@ public class TransacaoFormDto {
 	@Size(min=5, max=6)
 	private String ticker;
 	@PastOrPresent
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate data;	
 	@DecimalMin("0.01")
 	private BigDecimal preco;
