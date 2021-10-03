@@ -1,5 +1,7 @@
 package br.com.alura.transacoes.service;
 
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,10 +25,14 @@ public class TransacaoService {
 		return transacoes.map(t -> modelMapper.map(t, TransacaoDto.class));
 	}
 
-	public void cadastrar(TransacaoFormDto dto) {
+	@Transactional
+	public TransacaoDto cadastrar(TransacaoFormDto dto) {
 		Transacao transacao = modelMapper.map(dto, Transacao.class);
 		transacao.setId(null);
+		
 		transacaoRepository.save(transacao);
+		return modelMapper.map(transacao, TransacaoDto.class);
+		
 
 	}
 }

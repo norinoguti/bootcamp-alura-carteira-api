@@ -2,6 +2,8 @@ package br.com.alura.transacoes.service;
 
 import java.util.Random;
 
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,7 +28,8 @@ public class UsuarioService {
 
 	}
 
-	public void cadastrar(UsuarioFormDto dto) {
+	@Transactional
+	public UsuarioDto cadastrar(UsuarioFormDto dto) {
 		Usuario usuario = modelMapper.map(dto, Usuario.class);
 
 		// cria senha automaticamente
@@ -35,5 +38,7 @@ public class UsuarioService {
 		//System.out.println(usuario.getSenha());
 		
 		usuarioRepository.save(usuario);
+		
+		return modelMapper.map(usuario, UsuarioDto.class);
 	}
 }

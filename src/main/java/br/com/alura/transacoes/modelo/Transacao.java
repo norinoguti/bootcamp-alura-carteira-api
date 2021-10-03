@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,7 +30,6 @@ import lombok.ToString;
 public class Transacao {
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id",unique=true,nullable=false)
 	private Long id;
 	private String ticker;
 	private LocalDate data;

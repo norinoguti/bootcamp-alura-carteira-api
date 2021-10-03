@@ -9,6 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 public class UsuarioDto {
+	private Long id;
 	private String nome;
 	private String login;
 	
