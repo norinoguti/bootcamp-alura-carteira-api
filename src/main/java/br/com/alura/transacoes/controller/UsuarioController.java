@@ -2,6 +2,8 @@ package br.com.alura.transacoes.controller;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +32,7 @@ public class UsuarioController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<UsuarioDto> cadastrar(@RequestBody UsuarioFormDto dto,
+	public ResponseEntity<UsuarioDto> cadastrar(@RequestBody @Valid UsuarioFormDto dto,
 			UriComponentsBuilder uriBuilder) {
 		UsuarioDto usuarioDto = service.cadastrar(dto);
 		

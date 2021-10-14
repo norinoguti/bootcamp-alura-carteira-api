@@ -9,12 +9,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UsuarioFormDto {
-	@NotBlank
-	@Size(min=5, max= 20)
-	private String nome;
-	@NotBlank
-	@Size(min=5, max=10)
-	private String login;
 	
+	@NotBlank
+	@Size(min=3,max=100)
+	private String nome;
+	
+	@NotBlank
+	@Size(min=5,max=100)
+	private String login;
 
 }
