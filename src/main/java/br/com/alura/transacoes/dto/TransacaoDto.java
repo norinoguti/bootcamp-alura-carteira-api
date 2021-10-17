@@ -1,6 +1,7 @@
 package br.com.alura.transacoes.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import br.com.alura.transacoes.modelo.TipoTransacao;
 import lombok.Getter;
