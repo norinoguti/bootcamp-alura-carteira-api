@@ -2,6 +2,7 @@ package br.com.alura.transacoes.service;
 
 import java.util.Random;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.com.alura.transacoes.dto.AtualizacaoUsuarioFormDto;
 import br.com.alura.transacoes.dto.UsuarioDto;
 import br.com.alura.transacoes.dto.UsuarioFormDto;
 import br.com.alura.transacoes.modelo.Usuario;
@@ -40,5 +42,25 @@ public class UsuarioService {
 		usuarioRepository.save(usuario);
 		
 		return modelMapper.map(usuario, UsuarioDto.class);
+	}
+	
+	@Transactional
+	public UsuarioDto atualizar(AtualizacaoUsuarioFormDto dto) {
+		Usuario usuario = usuarioRepository.getById(dto.getId());		
+		usuario.atualizarInformacoes(dto.getLogin(),dto.getNome());		
+		return modelMapper.map(usuario, UsuarioDto.class);
+	}
+	
+	@Transactional
+	public void remover(Long id) {
+		usuarioRepository.deleteById(id);
+		
+	}
+	
+	public UsuarioDto detalhar(Long id) {
+		Usuario usuario = usuarioRepository
+				.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException());
+				return modelMapper.map(usuario, UsuarioDto.class);
 	}
 }
