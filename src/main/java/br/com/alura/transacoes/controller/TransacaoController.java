@@ -25,9 +25,11 @@ import br.com.alura.transacoes.dto.TransacaoDetalhadaDto;
 import br.com.alura.transacoes.dto.TransacaoDto;
 import br.com.alura.transacoes.dto.TransacaoFormDto;
 import br.com.alura.transacoes.service.TransacaoService;
+import io.swagger.annotations.Api;
 
 @RestController
 @RequestMapping("/transacoes")
+@Api(tags = "Transação")
 public class TransacaoController {
 	@Autowired
 	private TransacaoService service;

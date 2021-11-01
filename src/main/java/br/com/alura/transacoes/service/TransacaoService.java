@@ -27,7 +27,8 @@ public class TransacaoService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-	private ModelMapper modelMapper = new ModelMapper();
+	@Autowired
+	private ModelMapper modelMapper;
 
 	public Page<TransacaoDto> listar(Pageable paginacao) {
 		Page<Transacao> transacoes = transacaoRepository.findAll(paginacao);
@@ -48,7 +49,7 @@ public class TransacaoService {
 			return modelMapper.map(transacao, TransacaoDto.class);
 
 		} catch (EntityNotFoundException e) {
-			throw new IllegalArgumentException("Usuario inexsitente");
+			throw new IllegalArgumentException("Usuario inexistente");
 		}
 
 	}

@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.alura.transacoes.dto.ItemCarteiraDto;
 import br.com.alura.transacoes.service.RelatorioService;
+import io.swagger.annotations.Api;
 
 @RestController
 @RequestMapping("/relatorios")
+@Api(tags = "Relatório")
 public class RelatoriosController {
 	
 	@Autowired

@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.alura.transacoes.dto.AtualizacaoUsuarioFormDto;
@@ -22,7 +23,12 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	private ModelMapper modelMapper = new ModelMapper();
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	public Page<UsuarioDto> listar(Pageable paginacao) {
 		Page<Usuario> usuarios = usuarioRepository.findAll(paginacao);
@@ -36,7 +42,7 @@ public class UsuarioService {
 
 		// cria senha automaticamente
 		String senha = new Random().nextInt(99999) + "";
-		usuario.setSenha(senha);
+		usuario.setSenha(bCryptPasswordEncoder.encode(senha));
 		//System.out.println(usuario.getSenha());
 		
 		usuarioRepository.save(usuario);
@@ -53,7 +59,13 @@ public class UsuarioService {
 	
 	@Transactional
 	public void remover(Long id) {
-		usuarioRepository.deleteById(id);
+		try{
+			usuarioRepository.deleteById(id);
+			usuarioRepository.flush();
+		}catch(org.springframework.dao.DataIntegrityViolationException e) {
+			throw new RuntimeException("Existe transação vinculada a esse usuário, exclua a transação primeiro");
+		}
+		
 		
 	}
 	

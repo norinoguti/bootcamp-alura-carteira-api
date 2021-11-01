@@ -41,7 +41,7 @@ class TransacaoServiceTest {
 				new BigDecimal("10.45"),
 				10,
 				TipoTransacao.COMPRA,
-				1l);
+				1L);
 		return formDto;
 	}
 	
