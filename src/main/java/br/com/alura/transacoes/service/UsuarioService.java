@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import br.com.alura.transacoes.dto.AtualizacaoUsuarioFormDto;
 import br.com.alura.transacoes.dto.UsuarioDto;
 import br.com.alura.transacoes.dto.UsuarioFormDto;
+import br.com.alura.transacoes.modelo.Perfil;
 import br.com.alura.transacoes.modelo.Usuario;
+import br.com.alura.transacoes.repository.PerfilRepository;
 import br.com.alura.transacoes.repository.UsuarioRepository;
 
 @Service
@@ -29,6 +31,9 @@ public class UsuarioService {
 	
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private PerfilRepository perfilRepository;
 
 	public Page<UsuarioDto> listar(Pageable paginacao) {
 		Page<Usuario> usuarios = usuarioRepository.findAll(paginacao);
@@ -39,7 +44,8 @@ public class UsuarioService {
 	@Transactional
 	public UsuarioDto cadastrar(UsuarioFormDto dto) {
 		Usuario usuario = modelMapper.map(dto, Usuario.class);
-
+		Perfil perfil = perfilRepository.getById(dto.getPerfilId());
+		usuario.adicionarPerfil(perfil);
 		// cria senha automaticamente
 		String senha = new Random().nextInt(99999) + "";
 		usuario.setSenha(bCryptPasswordEncoder.encode(senha));

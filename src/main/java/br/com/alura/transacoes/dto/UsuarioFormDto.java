@@ -1,6 +1,7 @@
 package br.com.alura.transacoes.dto;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.Getter;
@@ -17,5 +18,8 @@ public class UsuarioFormDto {
 	@NotBlank
 	@Size(min=5,max=100)
 	private String login;
+	
+	@NotNull
+	private Long perfilId;
 
 }
