@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import br.com.alura.transacoes.dto.AtualizacaoTransacaoFormDto;
@@ -30,17 +31,20 @@ public class TransacaoService {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	public Page<TransacaoDto> listar(Pageable paginacao) {
-		Page<Transacao> transacoes = transacaoRepository.findAll(paginacao);
-		return transacoes.map(t -> modelMapper.map(t, TransacaoDto.class));
+	public Page<TransacaoDto> listar(Pageable paginacao, Usuario usuario) {
+		return transacaoRepository.findAllByUsuario(paginacao, usuario)
+				.map(t -> modelMapper.map(t, TransacaoDto.class));
 	}
 
 	@Transactional
-	public TransacaoDto cadastrar(TransacaoFormDto dto) {
+	public TransacaoDto cadastrar(TransacaoFormDto dto, Usuario logado) {
 		Long idUsuario = dto.getUsuarioId();
 
 		try {
 			Usuario usuario = usuarioRepository.getById(idUsuario);
+			if (!usuario.equals(logado)) {
+				lancarErroAcessoNegado();
+			}
 			Transacao transacao = modelMapper.map(dto, Transacao.class);
 			transacao.setId(null);
 			transacao.setUsuario(usuario);
@@ -55,23 +59,41 @@ public class TransacaoService {
 	}
 
 	@Transactional
-	public TransacaoDto atualizar(AtualizacaoTransacaoFormDto dto) {
-		Transacao transacao = transacaoRepository.getById(dto.getId());		
-		transacao.atualizarInformacoes(dto.getTicker(),dto.getData(),dto.getPreco(),dto.getQuantidade(),dto.getTipo());
-		
+	public TransacaoDto atualizar(AtualizacaoTransacaoFormDto dto, Usuario logado) {
+		Transacao transacao = transacaoRepository.getById(dto.getId());
+		if (!transacao.pertenceAoUsuario(logado)) {
+			lancarErroAcessoNegado();
+		}
+
+		transacao.atualizarInformacoes(dto.getTicker(), dto.getData(), dto.getPreco(), dto.getQuantidade(),
+				dto.getTipo());
+
 		return modelMapper.map(transacao, TransacaoDto.class);
 	}
 
 	@Transactional
-	public void remover(Long id) {
-		transacaoRepository.deleteById(id);;
-		
+	public void remover(Long id, Usuario logado) {
+		Transacao transacao = transacaoRepository.getById(id);
+		if(!transacao.pertenceAoUsuario(logado)) {
+			lancarErroAcessoNegado();
+		}
+		transacaoRepository.deleteById(id);		
+
 	}
 
-	public TransacaoDetalhadaDto detalhar(Long id) {
+	public TransacaoDetalhadaDto detalhar(Long id, Usuario logado) {
 		Transacao transacao = transacaoRepository
 				.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException());
-				return modelMapper.map(transacao, TransacaoDetalhadaDto.class);
+		
+		if(!transacao.pertenceAoUsuario(logado)) {
+			lancarErroAcessoNegado();
+		}
+		return modelMapper.map(transacao, TransacaoDetalhadaDto.class);
 	}
+
+	private void lancarErroAcessoNegado() {
+		throw new AccessDeniedException("Acesso negado!");
+	}
+
 }
