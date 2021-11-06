@@ -3,9 +3,12 @@ package br.com.alura.transacoes.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import org.springframework.stereotype.Service;
+
 import br.com.alura.transacoes.modelo.TipoTransacao;
 import br.com.alura.transacoes.modelo.Transacao;
 
+@Service
 public class CalculadoraDeImpostoService {
 	
 	//15% de imposto quando for tipo VENDA e valorTransacao for maior que 20.000,00
