@@ -101,6 +101,7 @@
 	</dependencies>
 
 	<build>
+	<finalName>transacoes-api</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
