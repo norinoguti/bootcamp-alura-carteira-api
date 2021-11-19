@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import br.com.alura.transacoes.dto.AtualizacaoUsuarioFormDto;
 import br.com.alura.transacoes.dto.UsuarioDto;
 import br.com.alura.transacoes.dto.UsuarioFormDto;
+import br.com.alura.transacoes.infra.EnviadorDeEmail;
 import br.com.alura.transacoes.modelo.Perfil;
 import br.com.alura.transacoes.modelo.Usuario;
 import br.com.alura.transacoes.repository.PerfilRepository;
@@ -34,6 +35,9 @@ public class UsuarioService {
 	
 	@Autowired
 	private PerfilRepository perfilRepository;
+	
+	@Autowired
+	private EnviadorDeEmail enviadorDeEmail;
 
 	public Page<UsuarioDto> listar(Pageable paginacao) {
 		Page<Usuario> usuarios = usuarioRepository.findAll(paginacao);
@@ -51,9 +55,18 @@ public class UsuarioService {
 		String senha = new Random().nextInt(99999) + "";
 		System.out.println(usuario.getSenha());
 		usuario.setSenha(bCryptPasswordEncoder.encode(senha));
-		//System.out.println(usuario.getSenha());
 		
 		usuarioRepository.save(usuario);
+		
+		String destinatario = usuario.getEmail();
+		String assunto = "Carteira - Bem vindo(a)!";
+		
+		String mensagem = String.format("Olá %s!\n\n"
+				+ " Segue seus dados de acesso ao Sistema Carteira:"
+				+ "\nLogin: %s "
+				+ "\nSenha:%s ", usuario.getNome(), usuario.getLogin(),senha);
+		
+		enviadorDeEmail.enviarEmail(destinatario, assunto, mensagem);
 		
 		return modelMapper.map(usuario, UsuarioDto.class);
 	}

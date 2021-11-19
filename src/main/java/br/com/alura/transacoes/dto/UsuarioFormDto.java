@@ -1,5 +1,6 @@
 package br.com.alura.transacoes.dto;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,4 +23,7 @@ public class UsuarioFormDto {
 	@NotNull
 	private Long perfilId;
 
+	@NotNull
+	@Email
+	private String email;
 }
