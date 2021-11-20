@@ -16,12 +16,15 @@ public class EnviadorDeEmailReal implements EnviadorDeEmail {
 	@Override
 	@Async
 	public void enviarEmail(String destinatario, String assunto, String mensagem) {
-		SimpleMailMessage email = new SimpleMailMessage();
+		try{SimpleMailMessage email = new SimpleMailMessage();
 		email.setTo(destinatario);
 		email.setSubject(assunto);
 		email.setText(mensagem);
 		
 		mailSender.send(email);
+	}	catch(Exception e) {
+		e.printStackTrace(); 
 	}
+	
 
-}
+	}}
